@@ -1,0 +1,55 @@
+digraph HastaSistemi {
+    rankdir=TB;
+    node [shape=rectangle, style=rounded, fontname="Arial"];
+
+    START [label="Başla"];
+    KIMLIK [label="TC Kimlik No Gir"];
+    KONTROL [shape=diamond, label="TC No geçerli mi?"];
+    HATA [label="Geçersiz TC No\nTekrar dene"];
+    ISLEM_SEC [label="İşlem Seç:\n1-Randevu Al\n2-Tahlil Sonucu Gör\n0-Çıkış"];
+    
+    // Randevu modülü
+    RAND_POL [label="Poliklinik seç"];
+    RAND_DOK [label="Doktor listesi ve saat seç"];
+    RAND_ONAY [label="Randevu oluştur ve SMS gönder"];
+    
+    // Tahlil modülü
+    TAHLIL_VAR [shape=diamond, label="Tahlil var mı?"];
+    TAHLIL_YOK [label="Tahlil kaydı bulunamadı"];
+    SONUC_HAZIR [shape=diamond, label="Sonuç hazır mı?"];
+    SONUC_GOR [label="Sonuçları görüntüle"];
+    PDF_SEC [shape=diamond, label="PDF indirilsin mi?"];
+    PDF_INDIR [label="PDF indir"];
+    BEKLE [label="Sonuç hazır değil\nDaha sonra tekrar dene"];
+
+    DEVAM_ET [shape=diamond, label="Başka işlem yapmak ister misiniz?"];
+    BITIR [label="İyi günler\nSistemden çık"];
+    
+    // Akışlar
+    START -> KIMLIK;
+    KIMLIK -> KONTROL;
+    KONTROL -> HATA [label="Hayır"];
+    HATA -> KIMLIK;
+    KONTROL -> ISLEM_SEC [label="Evet"];
+
+    ISLEM_SEC -> RAND_POL [label="1"];
+    RAND_POL -> RAND_DOK;
+    RAND_DOK -> RAND_ONAY;
+    RAND_ONAY -> DEVAM_ET;
+
+    ISLEM_SEC -> TAHLIL_VAR [label="2"];
+    TAHLIL_VAR -> TAHLIL_YOK [label="Hayır"];
+    TAHLIL_YOK -> DEVAM_ET;
+    TAHLIL_VAR -> SONUC_HAZIR [label="Evet"];
+    SONUC_HAZIR -> SONUC_GOR [label="Evet"];
+    SONUC_HAZIR -> BEKLE [label="Hayır"];
+    BEKLE -> DEVAM_ET;
+    SONUC_GOR -> PDF_SEC;
+    PDF_SEC -> PDF_INDIR [label="Evet"];
+    PDF_SEC -> DEVAM_ET [label="Hayır"];
+    PDF_INDIR -> DEVAM_ET;
+
+    ISLEM_SEC -> BITIR [label="0"];
+    DEVAM_ET -> ISLEM_SEC [label="Evet"];
+    DEVAM_ET -> BITIR [label="Hayır"];
+}
