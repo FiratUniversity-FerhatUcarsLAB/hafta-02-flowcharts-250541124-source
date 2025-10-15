@@ -1,0 +1,58 @@
+digraph ECommerceFlow {
+    rankdir=TB;
+    node [shape=rectangle, style=rounded, fontname="Arial"];
+
+    Start [label="BAŞLA", shape=ellipse, style=filled, fillcolor=lightgreen];
+    Login [label="Kullanıcı girişi kontrolü"];
+    LoginFail [label="Giriş başarısız", shape=diamond, style=filled, fillcolor=lightcoral];
+    Categories [label="Ürün kategorileri arasında gezinme (döngü)"];
+    ProductSelect [label="Ürün seçimi"];
+    StockCheck [label="Stok kontrolü"];
+    AddCart [label="Ürünü sepete ekle"];
+    OutOfStock [label="Stokta yok"];
+    CartView [label="Sepeti görüntüle ve düzenle (döngü)"];
+    DiscountCheck [label="İndirim kodu uygulanabilir mi?"];
+    DiscountApply [label="İndirim uygulandı"];
+    InvalidCode [label="Geçersiz kod"];
+    Min50Check [label="Sepet tutarı ≥ 50 TL mi?"];
+    StopMin [label="Yetersiz tutar → DUR", shape=ellipse, fillcolor=lightcoral, style=filled];
+    CargoCheck [label="Kargo ücreti hesapla\n(≥200 TL ücretsiz)"];
+    PaymentSelect [label="Ödeme yöntemi seçimi"];
+    PaymentCard [label="Kredi Kartı işlemi"];
+    PaymentTransfer [label="Havale bilgisi"];
+    Confirm [label="Sipariş onayı"];
+    End [label="BİTİR", shape=ellipse, style=filled, fillcolor=lightblue];
+
+    // Bağlantılar
+    Start -> Login;
+    Login -> LoginFail [label="Hatalı"];
+    LoginFail -> Login [label="Tekrar dene"];
+    Login -> Categories [label="Başarılı"];
+
+    Categories -> ProductSelect;
+    ProductSelect -> StockCheck;
+    StockCheck -> AddCart [label="Stok var"];
+    StockCheck -> OutOfStock [label="Yok"];
+    AddCart -> Categories [label="Başka ürün?"];
+    OutOfStock -> Categories;
+
+    Categories -> CartView [label="Bitir"];
+
+    CartView -> DiscountCheck;
+    DiscountCheck -> DiscountApply [label="Geçerli kod"];
+    DiscountCheck -> InvalidCode [label="Geçersiz kod"];
+    DiscountApply -> Min50Check;
+    InvalidCode -> Min50Check;
+
+    Min50Check -> StopMin [label="Hayır"];
+    Min50Check -> CargoCheck [label="Evet"];
+
+    CargoCheck -> PaymentSelect;
+    PaymentSelect -> PaymentCard [label="Kredi Kartı"];
+    PaymentSelect -> PaymentTransfer [label="Havale"];
+
+    PaymentCard -> Confirm;
+    PaymentTransfer -> Confirm;
+
+    Confirm -> End;
+}
