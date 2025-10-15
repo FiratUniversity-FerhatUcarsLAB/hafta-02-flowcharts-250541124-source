@@ -1,0 +1,32 @@
+BAŞLA
+
+// Kullanıcı girişi kontrolü
+TEKRARLA
+    Yazdır "Kullanıcı adınızı giriniz:"
+    Oku kullaniciAdi
+    Yazdır "Şifrenizi giriniz:"
+    Oku sifre
+
+    EĞER (kullaniciAdi == kayıtlıKullanici) VE (sifre == kayıtlıSifre) İSE
+        Yazdır "Giriş başarılı."
+        girisBasarili = DOĞRU
+    DEĞİLSE
+        Yazdır "Giriş başarısız. Tekrar deneyiniz."
+        girisBasarili = YANLIŞ
+    SON
+SONA KADAR girisBasarili == YANLIŞ
+
+
+// Ürün kategorileri arasında gezinme
+TEKRARLA
+    Yazdır "Kategori seçiniz (1-Elektronik, 2-Giyim, 3-Kitap, 0-Sepete geç)"
+    Oku kategori
+
+    EĞER kategori == 0 İSE
+        ÇIK
+    SON
+
+    ÜrünleriListele(kategori)
+
+    // Ürün seçimi ve stok kontrolü
+    Yazdır "Sepete eklemek istedi
