@@ -1,0 +1,43 @@
+digraph ATM_Para_Cekme {
+    rankdir=TB;
+    node [shape=rectangle, style=rounded, fontname="Arial"];
+
+    start [label="BAŞLA"];
+    kart_tak [label="Kart Tak"];
+    pin_gir [label="PIN Gir"];
+    pin_kontrol [shape=diamond, label="PIN Doğru mu?"];
+    hatali_pin [label="Hatalı PIN! Deneme +1"];
+    kart_bloke [label="3 Hatalı Giriş? Kart Bloke"];
+    bakiye_goster [label="Bakiyeyi Göster"];
+    tutar_gir [label="Çekilmek İstenen Tutarı Gir"];
+    yetersiz_bakiye [label="Yetersiz Bakiye"];
+    yirmi_kati [shape=diamond, label="Tutar 20 TL'nin Katı mı?"];
+    gunluk_limit [shape=diamond, label="Günlük Limit Aşıldı mı?"];
+    para_ver [label="Para Ver ve Fiş Yazdır"];
+    baska_islem [shape=diamond, label="Başka İşlem Yapmak İster misiniz?"];
+    bitir [label="Kartı İade Et ve BİTİR"];
+
+    // Akış
+    start -> kart_tak -> pin_gir -> pin_kontrol;
+
+    pin_kontrol -> bakiye_goster [label="Evet"];
+    pin_kontrol -> hatali_pin [label="Hayır"];
+    hatali_pin -> kart_bloke [label="3 Hata Oldu mu?"];
+    kart_bloke -> bitir [label="Evet"];
+    kart_bloke -> pin_gir [label="Hayır"];
+
+    bakiye_goster -> tutar_gir;
+    tutar_gir -> yetersiz_bakiye [label="Tutar > Bakiye"];
+    yetersiz_bakiye -> tutar_gir;
+
+    tutar_gir -> yirmi_kati [label="Tutar <= Bakiye"];
+    yirmi_kati -> gunluk_limit [label="Evet"];
+    yirmi_kati -> tutar_gir [label="Hayır"];
+
+    gunluk_limit -> para_ver [label="Hayır"];
+    gunluk_limit -> tutar_gir [label="Evet"];
+
+    para_ver -> baska_islem;
+    baska_islem -> bakiye_goster [label="Evet"];
+    baska_islem -> bitir [label="Hayır"];
+}
