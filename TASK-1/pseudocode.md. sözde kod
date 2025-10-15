@@ -1,0 +1,47 @@
+BEGIN
+
+  INSERT card
+  ATTEMPTS ← 0
+
+  REPEAT
+      ASK "PIN giriniz: "
+      READ pin
+      IF pin == correct_pin THEN
+          access_granted ← TRUE
+      ELSE
+          ATTEMPTS ← ATTEMPTS + 1
+          DISPLAY "Hatalı PIN!"
+      ENDIF
+  UNTIL access_granted == TRUE OR ATTEMPTS == 3
+
+  IF ATTEMPTS == 3 THEN
+      DISPLAY "Kart bloke oldu."
+      EJECT card
+      END
+  ENDIF
+
+  REPEAT
+      DISPLAY "Bakiyeniz: ", balance
+      ASK "Çekmek istediğiniz tutarı giriniz: "
+      READ amount
+
+      IF amount > balance THEN
+          DISPLAY "Yetersiz bakiye!"
+      ELSE IF amount MOD 20 != 0 THEN
+          DISPLAY "Tutar 20 TL'nin katı olmalıdır!"
+      ELSE IF amount > daily_limit THEN
+          DISPLAY "Günlük limit aşıldı!"
+      ELSE
+          balance ← balance - amount
+          DISPLAY "Para veriliyor..."
+          PRINT "Fiş çıkartılıyor..."
+      ENDIF
+
+      ASK "Başka işlem yapmak ister misiniz? (E/H): "
+      READ answer
+  UNTIL answer == "H"
+
+  DISPLAY "Kartınızı alınız."
+  EJECT card
+
+END
