@@ -1,0 +1,78 @@
+BAŞLA
+
+// --- Hasta kimlik doğrulama ---
+YAZ "Lütfen TC Kimlik Numaranızı giriniz:"
+TC_NO ← GİRİŞ
+
+EĞER TC_NO geçerli değilse
+    YAZ "Geçersiz TC Kimlik Numarası! Tekrar deneyiniz."
+    TEKRAR BAŞA DÖN
+DEĞİLSE
+    YAZ "Kimlik doğrulandı."
+SON
+
+// --- İşlem seçimi ---
+TEKRAR
+    YAZ "İşlem Seçiniz:"
+    YAZ "1 - Randevu Al"
+    YAZ "2 - Tahlil Sonucu Gör"
+    YAZ "0 - Çıkış"
+    SEÇİM ← GİRİŞ
+
+    EĞER SEÇİM = 1 İSE
+        // --- Randevu Modülü ---
+        YAZ "Poliklinik seçiniz:"
+        POLIKLINIK ← GİRİŞ
+
+        YAZ "Doktor listesini görüntülüyorsunuz..."
+        DOKTOR_LISTESI ← DOKTORLARI_GETİR(POLIKLINIK)
+
+        YAZ "Uygun saatleri seçiniz:"
+        UYGUN_SAATLER ← SAATLERI_GETİR(DOKTOR_LISTESI)
+        SAAT ← GİRİŞ
+
+        YAZ "Randevunuz oluşturuluyor..."
+        RANDEVU_OLUŞTUR(TC_NO, POLIKLINIK, SAAT)
+        YAZ "Randevu başarıyla oluşturuldu."
+
+        YAZ "Onay SMS'i gönderiliyor..."
+        SMS_GÖNDER(TC_NO)
+        YAZ "SMS gönderildi."
+
+    EĞER SEÇİM = 2 İSE
+        // --- Tahlil Modülü ---
+        YAZ "Tahlil bilgileri sorgulanıyor..."
+        VAR_MI ← TAHLIL_VAR_MI(TC_NO)
+
+        EĞER VAR_MI = HAYIR İSE
+            YAZ "Tahlil kaydı bulunamadı."
+        DEĞİLSE
+            HAZIR_MI ← SONUC_HAZIR_MI(TC_NO)
+            EĞER HAZIR_MI = EVET İSE
+                YAZ "Tahlil sonuçları görüntüleniyor..."
+                SONUC_GÖRÜNTÜLE(TC_NO)
+                YAZ "PDF olarak indirmek ister misiniz? (E/H)"
+                CEVAP ← GİRİŞ
+                EĞER CEVAP = "E" İSE
+                    PDF_INDIR(TC_NO)
+                SON
+            DEĞİLSE
+                YAZ "Sonuçlar henüz hazır değil, lütfen daha sonra tekrar deneyiniz."
+            SON
+        SON
+
+    EĞER SEÇİM = 0 İSE
+        YAZ "Sistemden çıkılıyor..."
+        ÇIKIŞ
+
+    DEĞİLSE
+        YAZ "Geçersiz seçim! Lütfen tekrar deneyiniz."
+    SON
+
+    YAZ "Başka bir işlem yapmak ister misiniz? (E/H)"
+    DEVAM ← GİRİŞ
+
+UNTIL DEVAM = "H"
+
+YAZ "İyi günler dileriz."
+BİTİR
