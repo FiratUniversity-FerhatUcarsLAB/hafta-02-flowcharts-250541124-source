@@ -1,0 +1,74 @@
+digraph OgrenciKayitSistemi {
+
+    rankdir=TB;
+    node [shape=rectangle, style=rounded, fontsize=11, fontname="Arial"];
+
+    Start [label="BAŞLA"];
+    Giris [label="Öğrenci No ve Şifre Girişi"];
+    Dogrulama [shape=diamond, label="Giriş Bilgileri Doğru mu?"];
+    DersListesi [label="Ders Listesini Görüntüle"];
+    DersDongu [label="Ders Ekle/Çıkar Döngüsü"];
+    Secim [shape=diamond, label="Seçim: 1-Ekle\n2-Çıkar\n3-Tamamla"];
+
+    // Ders ekleme süreci
+    DersKod [label="Ders Kodu Gir"];
+    Kontenjan [shape=diamond, label="Kontenjan Uygun mu?"];
+    OnKosul [shape=diamond, label="Ön Koşul Sağlanıyor mu?"];
+    Zaman [shape=diamond, label="Zaman Çakışması Var mı?"];
+    Kredi [shape=diamond, label="Toplam Kredi ≤ 35 mi?"];
+    DersEkle [label="Ders Eklendi"];
+    KrediAsildi [label="Kredi Limiti Aşıldı!"];
+    DersCikar [label="Ders Çıkarıldı"];
+
+    // Danışman ve kayıt özeti
+    GPA [label="GPA Değerini Kontrol Et"];
+    Danisman [shape=diamond, label="GPA < 2.5 mi?"];
+    OnayGerekli [label="Danışman Onayı Gerekli"];
+    OnayYok [label="Danışman Onayı Gerekmiyor"];
+    KayitOzeti [label="Kayıt Özeti Göster"];
+    Onay [shape=diamond, label="Kayıt Onaylandı mı?"];
+    KayitBasarili [label="Kayıt Tamamlandı"];
+    KayitIptal [label="Kayıt İptal Edildi"];
+    GirisHata [label="Giriş Başarısız!"];
+    End [label="BİTİR"];
+
+    // Akışlar
+    Start -> Giris -> Dogrulama;
+    Dogrulama -> DersListesi [label="Evet"];
+    Dogrulama -> GirisHata [label="Hayır"];
+    GirisHata -> End;
+
+    DersListesi -> DersDongu -> Secim;
+
+    // Ders ekleme
+    Secim -> DersKod [label="1"];
+    DersKod -> Kontenjan;
+    Kontenjan -> OnKosul [label="Evet"];
+    Kontenjan -> DersDongu [label="Hayır"];
+    OnKosul -> Zaman [label="Evet"];
+    OnKosul -> DersDongu [label="Hayır"];
+    Zaman -> Kredi [label="Hayır"];
+    Zaman -> DersDongu [label="Evet"];
+    Kredi -> DersEkle [label="Evet"];
+    Kredi -> KrediAsildi [label="Hayır"];
+    DersEkle -> DersDongu;
+    KrediAsildi -> DersDongu;
+
+    // Ders çıkarma
+    Secim -> DersCikar [label="2"];
+    DersCikar -> DersDongu;
+
+    // Kayıt tamamlama
+    Secim -> GPA [label="3"];
+    GPA -> Danisman;
+    Danisman -> OnayGerekli [label="Evet"];
+    Danisman -> OnayYok [label="Hayır"];
+    OnayGerekli -> KayitOzeti;
+    OnayYok -> KayitOzeti;
+
+    KayitOzeti -> Onay;
+    Onay -> KayitBasarili [label="Evet"];
+    Onay -> KayitIptal [label="Hayır"];
+    KayitBasarili -> End;
+    KayitIptal -> End;
+}
