@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="684pt" height="869pt" viewBox="0.00 0.00 684.00 869.00">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 864.8)">
+<title>ATM_Para_Cekme</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-864.8 679.92,-864.8 679.92,4 -4,4"/>
+<!-- start -->
+<g id="node1" class="node">
+<title>start</title>
+<path fill="none" stroke="black" d="M548.79,-860.8C548.79,-860.8 513.21,-860.8 513.21,-860.8 507.21,-860.8 501.21,-854.8 501.21,-848.8 501.21,-848.8 501.21,-836.8 501.21,-836.8 501.21,-830.8 507.21,-824.8 513.21,-824.8 513.21,-824.8 548.79,-824.8 548.79,-824.8 554.79,-824.8 560.79,-830.8 560.79,-836.8 560.79,-836.8 560.79,-848.8 560.79,-848.8 560.79,-854.8 554.79,-860.8 548.79,-860.8"/>
+<text xml:space="preserve" text-anchor="middle" x="531" y="-838.6" font-family="Arial" font-size="14.00">BAŞLA</text>
+</g>
+<!-- kart_tak -->
+<g id="node2" class="node">
+<title>kart_tak</title>
+<path fill="none" stroke="black" d="M553.45,-787.8C553.45,-787.8 508.55,-787.8 508.55,-787.8 502.55,-787.8 496.55,-781.8 496.55,-775.8 496.55,-775.8 496.55,-763.8 496.55,-763.8 496.55,-757.8 502.55,-751.8 508.55,-751.8 508.55,-751.8 553.45,-751.8 553.45,-751.8 559.45,-751.8 565.45,-757.8 565.45,-763.8 565.45,-763.8 565.45,-775.8 565.45,-775.8 565.45,-781.8 559.45,-787.8 553.45,-787.8"/>
+<text xml:space="preserve" text-anchor="middle" x="531" y="-765.6" font-family="Arial" font-size="14.00">Kart Tak</text>
+</g>
+<!-- start&#45;&gt;kart_tak -->
+<g id="edge1" class="edge">
+<title>start-&gt;kart_tak</title>
+<path fill="none" stroke="black" d="M531,-824.61C531,-817.03 531,-807.9 531,-799.34"/>
+<polygon fill="black" stroke="black" points="534.5,-799.34 531,-789.34 527.5,-799.34 534.5,-799.34"/>
+</g>
+<!-- pin_gir -->
+<g id="node3" class="node">
+<title>pin_gir</title>
+<path fill="none" stroke="black" d="M549.94,-714.8C549.94,-714.8 512.06,-714.8 512.06,-714.8 506.06,-714.8 500.06,-708.8 500.06,-702.8 500.06,-702.8 500.06,-690.8 500.06,-690.8 500.06,-684.8 506.06,-678.8 512.06,-678.8 512.06,-678.8 549.94,-678.8 549.94,-678.8 555.94,-678.8 561.94,-684.8 561.94,-690.8 561.94,-690.8 561.94,-702.8 561.94,-702.8 561.94,-708.8 555.94,-714.8 549.94,-714.8"/>
+<text xml:space="preserve" text-anchor="middle" x="531" y="-692.6" font-family="Arial" font-size="14.00">PIN Gir</text>
+</g>
+<!-- kart_tak&#45;&gt;pin_gir -->
+<g id="edge2" class="edge">
+<title>kart_tak-&gt;pin_gir</title>
+<path fill="none" stroke="black" d="M531,-751.61C531,-744.03 531,-734.9 531,-726.34"/>
+<polygon fill="black" stroke="black" points="534.5,-726.34 531,-716.34 527.5,-726.34 534.5,-726.34"/>
+</g>
+<!-- pin_kontrol -->
+<g id="node4" class="node">
+<title>pin_kontrol</title>
+<path fill="none" stroke="black" d="M450.16,-639.86C450.16,-639.86 364.12,-625.74 364.12,-625.74 358.2,-624.77 358.2,-622.83 364.12,-621.86 364.12,-621.86 450.16,-607.74 450.16,-607.74 456.08,-606.77 467.92,-606.77 473.84,-607.74 473.84,-607.74 559.88,-621.86 559.88,-621.86 565.8,-622.83 565.8,-624.77 559.88,-625.74 559.88,-625.74 473.84,-639.86 473.84,-639.86 467.92,-640.83 456.08,-640.83 450.16,-639.86"/>
+<text xml:space="preserve" text-anchor="middle" x="462" y="-619.6" font-family="Arial" font-size="14.00">PIN Doğru mu?</text>
+</g>
+<!-- pin_gir&#45;&gt;pin_kontrol -->
+<g id="edge3" class="edge">
+<title>pin_gir-&gt;pin_kontrol</title>
+<path fill="none" stroke="black" d="M514.3,-678.61C505.2,-669.25 493.83,-657.55 484.01,-647.45"/>
+<polygon fill="black" stroke="black" points="486.75,-645.25 477.27,-640.52 481.73,-650.13 486.75,-645.25"/>
+</g>
+<!-- hatali_pin -->
+<g id="node5" class="node">
+<title>hatali_pin</title>
+<path fill="none" stroke="black" d="M559.12,-553C559.12,-553 418.88,-553 418.88,-553 412.88,-553 406.88,-547 406.88,-541 406.88,-541 406.88,-529 406.88,-529 406.88,-523 412.88,-517 418.88,-517 418.88,-517 559.12,-517 559.12,-517 565.12,-517 571.12,-523 571.12,-529 571.12,-529 571.12,-541 571.12,-541 571.12,-547 565.12,-553 559.12,-553"/>
+<text xml:space="preserve" text-anchor="middle" x="489" y="-530.8" font-family="Arial" font-size="14.00">Hatalı PIN! Deneme +1</text>
+</g>
+<!-- pin_kontrol&#45;&gt;hatali_pin -->
+<g id="edge5" class="edge">
+<title>pin_kontrol-&gt;hatali_pin</title>
+<path fill="none" stroke="black" d="M467.08,-606.47C470.79,-594.54 475.92,-578.06 480.28,-564.03"/>
+<polygon fill="black" stroke="black" points="483.5,-565.48 483.12,-554.89 476.81,-563.4 483.5,-565.48"/>
+<text xml:space="preserve" text-anchor="middle" x="495.41" y="-575.2" font-family="Times,serif" font-size="14.00">Hayır</text>
+</g>
+<!-- bakiye_goster -->
+<g id="node7" class="node">
+<title>bakiye_goster</title>
+<path fill="none" stroke="black" d="M377.01,-553C377.01,-553 286.99,-553 286.99,-553 280.99,-553 274.99,-547 274.99,-541 274.99,-541 274.99,-529 274.99,-529 274.99,-523 280.99,-517 286.99,-517 286.99,-517 377.01,-517 377.01,-517 383.01,-517 389.01,-523 389.01,-529 389.01,-529 389.01,-541 389.01,-541 389.01,-547 383.01,-553 377.01,-553"/>
+<text xml:space="preserve" text-anchor="middle" x="332" y="-530.8" font-family="Arial" font-size="14.00">Bakiyeyi Göster</text>
+</g>
+<!-- pin_kontrol&#45;&gt;bakiye_goster -->
+<g id="edge4" class="edge">
+<title>pin_kontrol-&gt;bakiye_goster</title>
+<path fill="none" stroke="black" d="M441.11,-608.85C421.18,-595.54 390.76,-575.24 367.11,-559.44"/>
+<polygon fill="black" stroke="black" points="369.28,-556.68 359.02,-554.04 365.39,-562.5 369.28,-556.68"/>
+<text xml:space="preserve" text-anchor="middle" x="421.47" y="-575.2" font-family="Times,serif" font-size="14.00">Evet</text>
+</g>
+<!-- kart_bloke -->
+<g id="node6" class="node">
+<title>kart_bloke</title>
+<path fill="none" stroke="black" d="M663.92,-464.2C663.92,-464.2 510.08,-464.2 510.08,-464.2 504.08,-464.2 498.08,-458.2 498.08,-452.2 498.08,-452.2 498.08,-440.2 498.08,-440.2 498.08,-434.2 504.08,-428.2 510.08,-428.2 510.08,-428.2 663.92,-428.2 663.92,-428.2 669.92,-428.2 675.92,-434.2 675.92,-440.2 675.92,-440.2 675.92,-452.2 675.92,-452.2 675.92,-458.2 669.92,-464.2 663.92,-464.2"/>
+<text xml:space="preserve" text-anchor="middle" x="587" y="-442" font-family="Arial" font-size="14.00">3 Hatalı Giriş? Kart Bloke</text>
+</g>
+<!-- hatali_pin&#45;&gt;kart_bloke -->
+<g id="edge6" class="edge">
+<title>hatali_pin-&gt;kart_bloke</title>
+<path fill="none" stroke="black" d="M484.67,-516.6C483.01,-505.73 482.95,-492 489.97,-482.2 492.98,-477.99 496.55,-474.29 500.52,-471.03"/>
+<polygon fill="black" stroke="black" points="502.32,-474.04 508.52,-465.44 498.31,-468.3 502.32,-474.04"/>
+<text xml:space="preserve" text-anchor="middle" x="537.98" y="-486.4" font-family="Times,serif" font-size="14.00">3 Hata Oldu mu?</text>
+</g>
+<!-- kart_bloke&#45;&gt;pin_gir -->
+<g id="edge8" class="edge">
+<title>kart_bloke-&gt;pin_gir</title>
+<path fill="none" stroke="black" d="M590.37,-464.43C596.4,-499.43 606.18,-580.71 581,-641.8 576.63,-652.41 569.17,-662.22 561.33,-670.49"/>
+<polygon fill="black" stroke="black" points="558.91,-667.96 554.21,-677.45 563.81,-672.96 558.91,-667.96"/>
+<text xml:space="preserve" text-anchor="middle" x="613.79" y="-575.2" font-family="Times,serif" font-size="14.00">Hayır</text>
+</g>
+<!-- bitir -->
+<g id="node14" class="node">
+<title>bitir</title>
+<path fill="none" stroke="black" d="M463.86,-36C463.86,-36 320.14,-36 320.14,-36 314.14,-36 308.14,-30 308.14,-24 308.14,-24 308.14,-12 308.14,-12 308.14,-6 314.14,0 320.14,0 320.14,0 463.86,0 463.86,0 469.86,0 475.86,-6 475.86,-12 475.86,-12 475.86,-24 475.86,-24 475.86,-30 469.86,-36 463.86,-36"/>
+<text xml:space="preserve" text-anchor="middle" x="392" y="-13.8" font-family="Arial" font-size="14.00">Kartı İade Et ve BİTİR</text>
+</g>
+<!-- kart_bloke&#45;&gt;bitir -->
+<g id="edge7" class="edge">
+<title>kart_bloke-&gt;bitir</title>
+<path fill="none" stroke="black" d="M587,-427.91C587,-410.39 587,-382.51 587,-358.4 587,-358.4 587,-358.4 587,-105.8 587,-57.65 536.77,-36.02 487.3,-26.39"/>
+<polygon fill="black" stroke="black" points="488.06,-22.97 477.6,-24.67 486.84,-29.86 488.06,-22.97"/>
+<text xml:space="preserve" text-anchor="middle" x="599.83" y="-220" font-family="Times,serif" font-size="14.00">Evet</text>
+</g>
+<!-- tutar_gir -->
+<g id="node8" class="node">
+<title>tutar_gir</title>
+<path fill="none" stroke="black" d="M443.92,-464.2C443.92,-464.2 276.08,-464.2 276.08,-464.2 270.08,-464.2 264.08,-458.2 264.08,-452.2 264.08,-452.2 264.08,-440.2 264.08,-440.2 264.08,-434.2 270.08,-428.2 276.08,-428.2 276.08,-428.2 443.92,-428.2 443.92,-428.2 449.92,-428.2 455.92,-434.2 455.92,-440.2 455.92,-440.2 455.92,-452.2 455.92,-452.2 455.92,-458.2 449.92,-464.2 443.92,-464.2"/>
+<text xml:space="preserve" text-anchor="middle" x="360" y="-442" font-family="Arial" font-size="14.00">Çekilmek İstenen Tutarı Gir</text>
+</g>
+<!-- bakiye_goster&#45;&gt;tutar_gir -->
+<g id="edge9" class="edge">
+<title>bakiye_goster-&gt;tutar_gir</title>
+<path fill="none" stroke="black" d="M337.53,-516.85C341.34,-505.04 346.49,-489.07 350.9,-475.41"/>
+<polygon fill="black" stroke="black" points="354.18,-476.64 353.92,-466.05 347.52,-474.49 354.18,-476.64"/>
+</g>
+<!-- yetersiz_bakiye -->
+<g id="node9" class="node">
+<title>yetersiz_bakiye</title>
+<path fill="none" stroke="black" d="M485.24,-375.4C485.24,-375.4 396.76,-375.4 396.76,-375.4 390.76,-375.4 384.76,-369.4 384.76,-363.4 384.76,-363.4 384.76,-351.4 384.76,-351.4 384.76,-345.4 390.76,-339.4 396.76,-339.4 396.76,-339.4 485.24,-339.4 485.24,-339.4 491.24,-339.4 497.24,-345.4 497.24,-351.4 497.24,-351.4 497.24,-363.4 497.24,-363.4 497.24,-369.4 491.24,-375.4 485.24,-375.4"/>
+<text xml:space="preserve" text-anchor="middle" x="441" y="-353.2" font-family="Arial" font-size="14.00">Yetersiz Bakiye</text>
+</g>
+<!-- tutar_gir&#45;&gt;yetersiz_bakiye -->
+<g id="edge10" class="edge">
+<title>tutar_gir-&gt;yetersiz_bakiye</title>
+<path fill="none" stroke="black" d="M387.61,-427.77C394.69,-422.6 402,-416.59 408,-410.2 414.85,-402.91 421.11,-394 426.3,-385.64"/>
+<polygon fill="black" stroke="black" points="429.23,-387.56 431.29,-377.17 423.2,-384.01 429.23,-387.56"/>
+<text xml:space="preserve" text-anchor="middle" x="463" y="-397.6" font-family="Times,serif" font-size="14.00">Tutar &gt; Bakiye</text>
+</g>
+<!-- yirmi_kati -->
+<g id="node10" class="node">
+<title>yirmi_kati</title>
+<path fill="none" stroke="black" d="M185.07,-374.13C185.07,-374.13 39.66,-358.67 39.66,-358.67 33.7,-358.03 33.7,-356.77 39.66,-356.13 39.66,-356.13 185.07,-340.67 185.07,-340.67 191.03,-340.03 202.97,-340.03 208.93,-340.67 208.93,-340.67 354.34,-356.13 354.34,-356.13 360.3,-356.77 360.3,-358.03 354.34,-358.67 354.34,-358.67 208.93,-374.13 208.93,-374.13 202.97,-374.77 191.03,-374.77 185.07,-374.13"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-353.2" font-family="Arial" font-size="14.00">Tutar 20 TL'nin Katı mı?</text>
+</g>
+<!-- tutar_gir&#45;&gt;yirmi_kati -->
+<g id="edge12" class="edge">
+<title>tutar_gir-&gt;yirmi_kati</title>
+<path fill="none" stroke="black" d="M263.61,-432.75C248.3,-427.57 233.5,-420.32 221.24,-410.2 213.7,-403.98 208.37,-394.88 204.68,-386.04"/>
+<polygon fill="black" stroke="black" points="207.98,-384.89 201.32,-376.64 201.39,-387.24 207.98,-384.89"/>
+<text xml:space="preserve" text-anchor="middle" x="267.62" y="-397.6" font-family="Times,serif" font-size="14.00">Tutar &lt;= Bakiye</text>
+</g>
+<!-- yetersiz_bakiye&#45;&gt;tutar_gir -->
+<g id="edge11" class="edge">
+<title>yetersiz_bakiye-&gt;tutar_gir</title>
+<path fill="none" stroke="black" d="M424.52,-375.82C419.23,-381.42 413.36,-387.66 408,-393.4 400.05,-401.91 391.39,-411.24 383.64,-419.6"/>
+<polygon fill="black" stroke="black" points="381.21,-417.07 376.99,-426.79 386.35,-421.82 381.21,-417.07"/>
+</g>
+<!-- yirmi_kati&#45;&gt;tutar_gir -->
+<g id="edge14" class="edge">
+<title>yirmi_kati-&gt;tutar_gir</title>
+<path fill="none" stroke="black" d="M256.87,-369.5C276.09,-374.8 296.84,-382.46 314,-393.4 324.5,-400.09 334.02,-409.84 341.65,-419.08"/>
+<polygon fill="black" stroke="black" points="338.77,-421.08 347.68,-426.82 344.3,-416.78 338.77,-421.08"/>
+<text xml:space="preserve" text-anchor="middle" x="350.29" y="-397.6" font-family="Times,serif" font-size="14.00">Hayır</text>
+</g>
+<!-- gunluk_limit -->
+<g id="node11" class="node">
+<title>gunluk_limit</title>
+<path fill="none" stroke="black" d="M279.07,-285.32C279.07,-285.32 134.78,-269.88 134.78,-269.88 128.82,-269.24 128.82,-267.96 134.78,-267.32 134.78,-267.32 279.07,-251.88 279.07,-251.88 285.03,-251.24 296.97,-251.24 302.93,-251.88 302.93,-251.88 447.22,-267.32 447.22,-267.32 453.18,-267.96 453.18,-269.24 447.22,-269.88 447.22,-269.88 302.93,-285.32 302.93,-285.32 296.97,-285.96 285.03,-285.96 279.07,-285.32"/>
+<text xml:space="preserve" text-anchor="middle" x="291" y="-264.4" font-family="Arial" font-size="14.00">Günlük Limit Aşıldı mı?</text>
+</g>
+<!-- yirmi_kati&#45;&gt;gunluk_limit -->
+<g id="edge13" class="edge">
+<title>yirmi_kati-&gt;gunluk_limit</title>
+<path fill="none" stroke="black" d="M213.81,-340.88C228.29,-327.51 249.4,-308.02 265.88,-292.79"/>
+<polygon fill="black" stroke="black" points="267.94,-295.66 272.91,-286.3 263.19,-290.52 267.94,-295.66"/>
+<text xml:space="preserve" text-anchor="middle" x="265.25" y="-308.8" font-family="Times,serif" font-size="14.00">Evet</text>
+</g>
+<!-- gunluk_limit&#45;&gt;tutar_gir -->
+<g id="edge16" class="edge">
+<title>gunluk_limit-&gt;tutar_gir</title>
+<path fill="none" stroke="black" d="M387.27,-276.76C430.47,-285.24 477.93,-302.94 506,-339.4 531.17,-372.09 518.19,-398.6 509,-410.2 502.63,-418.24 486.55,-424.61 467.2,-429.59"/>
+<polygon fill="black" stroke="black" points="466.54,-426.15 457.62,-431.87 468.16,-432.96 466.54,-426.15"/>
+<text xml:space="preserve" text-anchor="middle" x="533.41" y="-353.2" font-family="Times,serif" font-size="14.00">Evet</text>
+</g>
+<!-- para_ver -->
+<g id="node12" class="node">
+<title>para_ver</title>
+<path fill="none" stroke="black" d="M359.75,-197.8C359.75,-197.8 222.25,-197.8 222.25,-197.8 216.25,-197.8 210.25,-191.8 210.25,-185.8 210.25,-185.8 210.25,-173.8 210.25,-173.8 210.25,-167.8 216.25,-161.8 222.25,-161.8 222.25,-161.8 359.75,-161.8 359.75,-161.8 365.75,-161.8 371.75,-167.8 371.75,-173.8 371.75,-173.8 371.75,-185.8 371.75,-185.8 371.75,-191.8 365.75,-197.8 359.75,-197.8"/>
+<text xml:space="preserve" text-anchor="middle" x="291" y="-175.6" font-family="Arial" font-size="14.00">Para Ver ve Fiş Yazdır</text>
+</g>
+<!-- gunluk_limit&#45;&gt;para_ver -->
+<g id="edge15" class="edge">
+<title>gunluk_limit-&gt;para_ver</title>
+<path fill="none" stroke="black" d="M291,-250.45C291,-238.76 291,-222.99 291,-209.42"/>
+<polygon fill="black" stroke="black" points="294.5,-209.72 291,-199.72 287.5,-209.72 294.5,-209.72"/>
+<text xml:space="preserve" text-anchor="middle" x="308.49" y="-220" font-family="Times,serif" font-size="14.00">Hayır</text>
+</g>
+<!-- baska_islem -->
+<g id="node13" class="node">
+<title>baska_islem</title>
+<path fill="none" stroke="black" d="M279.03,-123.89C279.03,-123.89 66.5,-107.71 66.5,-107.71 60.52,-107.26 60.52,-106.34 66.5,-105.89 66.5,-105.89 279.03,-89.71 279.03,-89.71 285.02,-89.26 296.98,-89.26 302.97,-89.71 302.97,-89.71 515.5,-105.89 515.5,-105.89 521.48,-106.34 521.48,-107.26 515.5,-107.71 515.5,-107.71 302.97,-123.89 302.97,-123.89 296.98,-124.34 285.02,-124.34 279.03,-123.89"/>
+<text xml:space="preserve" text-anchor="middle" x="291" y="-102.6" font-family="Arial" font-size="14.00">Başka İşlem Yapmak İster misiniz?</text>
+</g>
+<!-- para_ver&#45;&gt;baska_islem -->
+<g id="edge17" class="edge">
+<title>para_ver-&gt;baska_islem</title>
+<path fill="none" stroke="black" d="M291,-161.61C291,-154.03 291,-144.9 291,-136.34"/>
+<polygon fill="black" stroke="black" points="294.5,-136.34 291,-126.34 287.5,-136.34 294.5,-136.34"/>
+</g>
+<!-- baska_islem&#45;&gt;bakiye_goster -->
+<g id="edge18" class="edge">
+<title>baska_islem-&gt;bakiye_goster</title>
+<path fill="none" stroke="black" d="M166.75,-115.81C87.65,-124.45 0,-142.27 0,-178.8 0,-447.2 0,-447.2 0,-447.2 0,-501.14 166.11,-522.2 263.34,-529.91"/>
+<polygon fill="black" stroke="black" points="262.8,-533.38 273.04,-530.65 263.33,-526.4 262.8,-533.38"/>
+<text xml:space="preserve" text-anchor="middle" x="12.83" y="-308.8" font-family="Times,serif" font-size="14.00">Evet</text>
+</g>
+<!-- baska_islem&#45;&gt;bitir -->
+<g id="edge19" class="edge">
+<title>baska_islem-&gt;bitir</title>
+<path fill="none" stroke="black" d="M309.52,-89.88C324.56,-76.96 346.01,-58.52 363.27,-43.69"/>
+<polygon fill="black" stroke="black" points="365.41,-46.47 370.71,-37.29 360.85,-41.16 365.41,-46.47"/>
+<text xml:space="preserve" text-anchor="middle" x="368.04" y="-58.2" font-family="Times,serif" font-size="14.00">Hayır</text>
+</g>
+</g>
+</svg>
