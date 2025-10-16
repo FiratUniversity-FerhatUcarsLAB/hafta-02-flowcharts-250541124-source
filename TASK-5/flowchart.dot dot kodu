@@ -1,0 +1,69 @@
+digraph SmartHomeAlarm {
+  rankdir=TB;
+  node [fontname="Helvetica,Arial", fontsize=12];
+  edge [fontname="Helvetica,Arial", fontsize=11];
+
+  /* şekil tipleri */
+  Start [label="Başlat\n(Initialize)", shape=oval];
+  MainLoopCond [label="ANA DÖNGÜ\n(do ... while)\n(Şart: Sürekli çalışır)", shape=diamond];
+  ReadSensors [label="Tüm sensörleri oku\n(readSensors())", shape=box];
+  CollectEvents [label="Olayları topla\n(event window)", shape=box];
+  EvalThreat [label="Tehdit değerlendirme\nevaluateThreat()", shape=box];
+  ThreatDecision [label="Tehdit seviyesi > 0 ?", shape=diamond];
+  FalseAlarmCheck [label="Yanlış alarm kontrolü\ncheckFalseAlarm()", shape=diamond];
+  FalseAlarmHandle [label="Muhtemel yanlış alarm\nkaydet / bekle ve tekrar değerlendir", shape=box];
+  CreateAlarm [label="Alarm oluştur\ncreateAlarm()", shape=box];
+  TriggerAlarm [label="Alarm tetikle\n(triggerAlarm)\n- Siren / Işık\n- Kamera kaydı\n- Kanıt sakla", shape=box];
+  Notify [label="Bildirim gönder\n(SMS / Push / Email)\nrate-limit & retry", shape=box];
+  WaitReset [label="Alarm sıfırlanana kadar bekle\n(kullanıcı: dismiss/ack veya otomatik işlemler)", shape=box];
+  ResetCmd [label="Reset komutu geldi mi?", shape=diamond];
+  ResetAction [label="Alarmı sıfırla\nstopSiren(), log, resolve", shape=box];
+  NoThreat [label="Tehdit yok: bekle\n(poll interval) ve döngüye dön", shape=box];
+  Heartbeat [label="Periyodik işler\n(heartbeat, log upload, cleanup)", shape=box];
+  ErrorHandler [label="Hata yakala\nrecoverOrRestart()", shape=box];
+  End [label="(Sonsuz döngü) — Çıkış yok", shape=oval];
+
+  /* akış kenarları */
+  Start -> MainLoopCond;
+
+  MainLoopCond -> ReadSensors [label="Doğru ise"];
+  MainLoopCond -> End [label="Doğru değilse", style="dashed"];
+
+  ReadSensors -> CollectEvents;
+  CollectEvents -> EvalThreat;
+  EvalThreat -> ThreatDecision;
+
+  ThreatDecision -> NoThreat [label="Hayır (seviye 0)"];
+  ThreatDecision -> FalseAlarmCheck [label="Evet (seviye >0)"];
+
+  FalseAlarmCheck -> FalseAlarmHandle [label="Muhtemel yanlış alarm"];
+  FalseAlarmCheck -> CreateAlarm [label="Gerçek/Onaylı alarm"];
+
+  FalseAlarmHandle -> ReadSensors [label="Kısa bekle, tekrar oku\n(geri ok: Sürekli)"];
+
+  CreateAlarm -> TriggerAlarm;
+  TriggerAlarm -> Notify;
+  Notify -> WaitReset;
+
+  WaitReset -> ResetCmd;
+  ResetCmd -> ResetAction [label="Evet"];
+  ResetCmd -> WaitReset [label="Hayır (beklemeye devam)"];
+  ResetAction -> MainLoopCond [label="Sıfırlandı → Döngüye dön"];
+
+  NoThreat -> Heartbeat;
+  Heartbeat -> MainLoopCond [label="Sürekli"];
+
+  /* hata yolu */
+  ReadSensors -> ErrorHandler [label="Okuma hatası", style="dotted"];
+  EvalThreat -> ErrorHandler [label="Hata", style="dotted"];
+  ErrorHandler -> MainLoopCond [label="Recover ve devam"];
+
+  /* geri-ok (loop back) gösterimi için ekstra görsel vurgusu */
+  MainLoopCond -> ReadSensors [label="", style="invis"];
+  { rank = same; MainLoopCond; ReadSensors; } 
+
+  /* görsel iyileştirme */
+  ThreatDecision [shape=diamond, style=filled, fillcolor="#FFF5CC"];
+  FalseAlarmCheck [shape=diamond, style=filled, fillcolor="#FFE6E6"];
+  ResetCmd [shape=diamond, style=filled, fillcolor="#E6F7FF"];
+}
