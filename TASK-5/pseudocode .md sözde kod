@@ -1,0 +1,262 @@
+/*
+  IoT Tabanlı Akıllı Ev Güvenlik Sistemi - Pseudocode
+  Özellikler:
+  - 7/24 çalışır ana döngü (watchdog + hata toleransı)
+  - Sensör okuma döngüsü (hareket, kapı/pencere, kamera durum, vs.)
+  - Tehdit algılama ve alarm seviyesi (1= düşük, 2= orta, 3= yüksek)
+  - Yanlış alarm kontrolü (ev sahibi evde mi? zaman, çoklu sensör doğrulama)
+  - Kamera aktivasyonu ve delil kaydı
+  - Bildirimler: SMS + Push App + Email (rate limit / retry)
+  - Alarm sıfırlama veya devam ettirme seçenekleri
+  - Güvenlik: debounce, anti-spam, loglama
+*/
+
+/* --- Konfigürasyon ve Sabitler --- */
+SENSOR_POLL_INTERVAL_MS = 500          // sensör okuma sıklığı
+HEARTBEAT_INTERVAL_MS = 60000          // sistem sağlık bildirimi saatlik/aylık
+NOTIFICATION_RATE_LIMIT_SEC = 300      // aynı alarm için en az kaç saniye bekle
+CAMERA_RECORD_SECONDS = 30
+FALSE_ALARM_GRACE_PERIOD_SEC = 60      // kısa sürede doğrulama için bekleme
+MULTI_SENSOR_CONFIRM_WINDOW_SEC = 10   // farklı sensörlerin doğrulaması için pencere
+MAX_NOTIFICATION_RETRIES = 3
+RETRY_BACKOFF_SEC = 10
+
+// Alarm seviyeleri eşikleri (örnek):
+THREAT_SCORE_THRESHOLDS = { low: 10, medium: 30, high: 60 }
+
+/* --- Sistem Durumları --- */
+systemState = {
+  armed: true,                 // sistem açık/kapalı (kullanıcı ayarı)
+  mode: "home" | "away",       // ev sahibi evde mi? => "home" azaltılmış hassasiyet
+  lastNotificationTime: {},    // alarmId -> timestamp
+  activeAlarms: {},            // alarmId -> alarm meta
+  sensorHistory: queue(),      // zamanlı sensör kayıtları
+  logs: []
+}
+
+/* --- Yardımcı Fonksiyonlar --- */
+function log(level, message):
+  timestamp = now()
+  append(systemState.logs, { timestamp, level, message })
+  // opsiyonel: uzak log sunucusuna gönder
+
+function readSensor(sensor):
+  // Donanımdan/sunucudan okuma; hata durumunda retry/markFault
+  value = sensor.read()
+  return { id: sensor.id, type: sensor.type, value: value, time: now() }
+
+function isOwnerHome():
+  // Kullanıcı konumu (geofencing), manuel mod, veya anahtarlı evdeyiz sensörü
+  if systemState.mode == "home": return true
+  // başka kontroller: phonePresence, schedule, manuel override
+  return false
+
+function activateCamera(cameraId, durationSeconds):
+  camera.startRecording(durationSeconds)
+  store = camera.uploadClip()
+  return store.url  // kanıt linki
+
+function sendNotification(channel, payload):
+  // channel in ["sms","push","email"]
+  for attempt from 1 to MAX_NOTIFICATION_RETRIES:
+    success = channel.send(payload)
+    if success:
+      return true
+    wait(RETRY_BACKOFF_SEC * attempt)
+  return false
+
+function rateLimitAllow(alarmId):
+  last = systemState.lastNotificationTime[alarmId] or 0
+  if (now() - last) < NOTIFICATION_RATE_LIMIT_SEC:
+    return false
+  systemState.lastNotificationTime[alarmId] = now()
+  return true
+
+function evaluateThreat(sensorEvents):
+  // Basit skor tabanlı değerlendirme: her sensör tipi ve konfigüre edilebilir ağırlık
+  score = 0
+  reasons = []
+  for ev in sensorEvents:
+    if ev.type == "motion":
+      score += (ev.value.confidence * 20) // örnek
+      append(reasons, "motion:"+ev.id)
+    if ev.type == "door":
+      if ev.value == "open": score += 40; append(reasons,"door_open:"+ev.id)
+    if ev.type == "window":
+      if ev.value == "open": score += 35; append(reasons,"window_open:"+ev.id)
+    if ev.type == "glass_break":
+      score += 50; append(reasons,"glass_break:"+ev.id)
+    // diğer sensörler...
+  // alarm seviyesi belirle
+  if score >= THREAT_SCORE_THRESHOLDS.high: level = 3
+  else if score >= THREAT_SCORE_THRESHOLDS.medium: level = 2
+  else if score >= THREAT_SCORE_THRESHOLDS.low: level = 1
+  else level = 0
+  return { score, level, reasons }
+
+/* --- Algoritma: Yanlış Alarm Kontrolü --- */
+function checkFalseAlarm(candidateEvents):
+  // 1) Ev sahibi evde mi? -> eğer evdeyse bazı yüksek eşiklere ihtiyaç duy
+  if isOwnerHome():
+    // örn. hareket + kapı açılma + kamera doğrulaması gerekebilir
+    requiredConfirmations = 2
+  else:
+    requiredConfirmations = 1
+
+  // 2) Çoklu sensör doğrulaması: birden fazla farklı sensör tipi doğrulaması
+  typesSeen = uniqueTypes(candidateEvents)
+  if length(typesSeen) >= requiredConfirmations:
+    return false  // false alarm değil
+
+  // 3) Kamera doğrulama (hareket tetiklemişse): kısa video al, insan var mı kontrol et (opsiyonel)
+  if containsType(candidateEvents, "motion") and cameraAvailable():
+    clipUrl = activateCamera(primaryCameraId, CAMERA_RECORD_SECONDS)
+    if analyzeClipForPerson(clipUrl) == true:
+      return false
+
+  // 4) Saat/gün kontrolü: örneğin öğleden sonra bahçede hareket vs. (opsiyonel)
+  // 5) Son karar: eğer yeterli kanıt yoksa, bunu potansiyel yanlış alarm olarak işaretle
+  return true  // muhtemel yanlış alarm (yani alarmı hemen tam tetikleme)
+
+/* --- Alarm Oluşturma ve Yönetim --- */
+function createAlarm(events, evaluated):
+  alarmId = uid()
+  alarm = {
+    id: alarmId,
+    events: events,
+    score: evaluated.score,
+    level: evaluated.level,
+    reasons: evaluated.reasons,
+    createdAt: now(),
+    status: "pending" // pending, active, acknowledged, resolved
+  }
+  systemState.activeAlarms[alarmId] = alarm
+  log("alarm", "Yeni alarm oluşturuldu: " + alarmId + ", seviye:" + alarm.level)
+  return alarm
+
+function triggerAlarm(alarm):
+  // Hemen lokal siren/ışıkları aktive et (seviye bazlı)
+  if alarm.level == 3:
+    siren.on(maxVolume=true); lights.flash(pattern="all")
+  else if alarm.level == 2:
+    siren.on(maxVolume=false); lights.flash(pattern="front_only")
+  else:
+    siren.on(maxVolume=false, short=true)
+
+  // Kamera aktivasyonu ve delil kaydı
+  if cameraAvailable():
+    clip = activateCamera(primaryCameraId, CAMERA_RECORD_SECONDS)
+    alarm.evidence = clip
+
+  alarm.status = "active"
+  log("alarm", "Alarm tetiklendi: " + alarm.id)
+
+  // Bildirim hazırlama
+  payload = {
+    title: "Evinizde alarm: Seviye " + alarm.level,
+    body: "Algılanan olay: " + join(alarm.reasons, ", "),
+    time: alarm.createdAt,
+    evidenceUrl: alarm.evidence or null,
+    alarmId: alarm.id,
+    level: alarm.level
+  }
+
+  // Rate-limit kontrol
+  if rateLimitAllow(alarm.id):
+    // Çoklu kanal gönderimi (paralel veya sıralı)
+    sendNotification(smsChannel, payload)
+    sendNotification(pushChannel, payload)
+    sendNotification(emailChannel, payload)
+  else:
+    log("warn", "Bildirim rate-limit'e takıldı: " + alarm.id)
+
+/* --- Kullanıcı Etkileşimi --- */
+function waitForUserResponse(alarm):
+  // Kullanıcı uygulama üzerinden kabul/yanlış/ignore/acknowledge
+  // Otomatik zaman aşımı: eğer kullanıcı 60s içinde reddederse alarm devam eder
+  response = app.waitForAction(alarm.id, timeout=FALSE_ALARM_GRACE_PERIOD_SEC)
+  return response // "ack","dismiss","deny","no_response"
+
+/* --- Ana Döngü --- */
+function main():
+  initializeHardware()
+  startWatchdog()
+  log("info", "Güvenlik sistemi başlatıldı")
+
+  while true:
+    try:
+      // 1) Sensör okuma
+      events = []
+      for sensor in allSensors:
+        reading = readSensor(sensor)
+        if reading is not null:
+          append(events, reading)
+          pushToHistory(systemState.sensorHistory, reading, maxAgeSeconds=3600)
+
+      // 2) Tehdit tespiti: olay penceresi içinde anlamlı olayları toplama
+      candidateEvents = selectRecentEvents(systemState.sensorHistory, windowSec=MULTI_SENSOR_CONFIRM_WINDOW_SEC)
+      evaluated = evaluateThreat(candidateEvents)
+
+      if evaluated.level > 0 and systemState.armed:
+        // 3) Yanlış alarm kontrolü
+        isFalse = checkFalseAlarm(candidateEvents)
+        if isFalse:
+          log("info", "Muhtemel yanlış alarm tespit edildi. Events: " + stringify(candidateEvents))
+          // Eğer muhtemel yanlış alarm ise kısa bekle ve yeniden değerlendir
+          wait(FALSE_ALARM_GRACE_PERIOD_SEC)
+          // tekrar oku ve tekrar değerlendir
+          candidateEvents2 = selectRecentEvents(systemState.sensorHistory, windowSec=MULTI_SENSOR_CONFIRM_WINDOW_SEC)
+          evaluated2 = evaluateThreat(candidateEvents2)
+          if evaluated2.level <= evaluated.level and checkFalseAlarm(candidateEvents2):
+            log("info", "Yanlış alarm onaylandı, alarm tetiklenmiyor.")
+            continue
+
+        // 4) Alarm oluştur ve tetikle
+        alarm = createAlarm(candidateEvents, evaluated)
+        triggerAlarm(alarm)
+
+        // 5) Kullanıcıdan onay bekle (opsiyonel - uygulama üzerinden)
+        userResp = waitForUserResponse(alarm)
+        if userResp == "dismiss":
+          alarm.status = "resolved"
+          stopSiren()
+          log("info", "Kullanıcı alarmı iptal etti: " + alarm.id)
+        else if userResp == "ack":
+          alarm.status = "acknowledged"
+          log("info", "Kullanıcı alarmı kabul/inceleme: " + alarm.id)
+        else:
+          // no response -> otomatik süreçler (polis çağrısı seviyesi yüksekse)
+          if alarm.level == 3 and not isOwnerHome():
+            // opsiyonel: otomatik güvenlik servisine yönlendir
+            contactSecurityService(alarm)
+      // 6) Periodik işler: heartbeat, log upload, cleanup
+      if timeSince(lastHeartbeat) > HEARTBEAT_INTERVAL_MS:
+        sendHeartbeat()
+        lastHeartbeat = now()
+      // 7) Kısa uyku / enerji yönetimi
+      wait(SENSOR_POLL_INTERVAL_MS)
+    except Exception as e:
+      log("error", "Ana döngü hatası: " + e)
+      recoverOrRestartComponent(e)
+      wait(2000) // küçük bekleme, sonra devam
+
+/* --- Yardımcı: Güvenlik servisi iletişim --- */
+function contactSecurityService(alarm):
+  payload = { alarmId: alarm.id, level: alarm.level, evidence: alarm.evidence, location: homeAddress }
+  securityApi.call(payload)
+  log("info", "Güvenlik servisine bildirildi: " + alarm.id)
+
+
+/* --- Son: Sistem Reset / Manuel müdahale --- */
+function resetAlarm(alarmId, byUser):
+  if alarmId in systemState.activeAlarms:
+    alarm = systemState.activeAlarms[alarmId]
+    stopSiren()
+    alarm.status = "resolved"
+    alarm.resolvedAt = now()
+    alarm.resolvedBy = byUser
+    log("info", "Alarm sıfırlandı: " + alarmId + " by " + byUser)
+    delete systemState.activeAlarms[alarmId]
+  else:
+    log("warn", "Reset isteği: bilinmeyen alarmId " + alarmId)
+
