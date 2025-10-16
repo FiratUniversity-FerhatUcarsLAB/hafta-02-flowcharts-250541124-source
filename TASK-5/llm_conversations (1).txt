@@ -1,0 +1,38 @@
+User: Sistem aktif mi kontrolü (koşul)
+Sensör okuma döngüsü (döngü - sürekli)
+Hareket sensörü kontrolü (koşul)
+Kapı/pencere sensörü kontrolü (koşul)
+Kamera aktivasyonu (koşul)
+Yanlış alarm kontrolü (ev sahibi evde mi?) (koşul)
+Alarm seviyesi belirleme (1-düşük, 2-orta, 3-yüksek) (koşul)
+Bildirim gönderme (SMS + App + Email)
+Bekle ve tekrar kontrol et (döngü)
+Alarm sıfırlama veya devam ettirme (koşul)
+IoT tabanlı akıllı ev güvenlik sistemini alarm ve bildirim süreçlerini pseudocode'a çevir 7/24 çalışır şekilde sensör okuma, tehdit algılama, alarm verme ve bildirim gönderme süreçlerini yaz.
+
+GPT: Aşağıda verdiğin gereksinimleri (7/24 çalışacak, IoT tabanlı akıllı ev güvenlik sistemi; sensör okuma, tehdit algılama, alarm ve bildirim gönderme, yanlış alarm kontrolü, alarm seviyesi vb.) karşılayan, okunması kolay ve pratikte doğrudan uygulanabilecek pseudocode hazırladım.
+(... uzun pseudocode içeriği ...)
+
+User: dot koduna çevir Ana DÖNGÜ sürekli çalışır (DOĞRU koşulu ile)
+Her döngü iterasyonunda tüm sensörler kontrol edilir
+Tehdit seviyesine göre farklı aksiyonlar alınır
+Alarm sıfırlama komutu gelene kadar devam eder, sonsuz döngüyü göstermek için geri ok kullanın ve “Sürekli” kullan.
+
+GPT: Aşağıda verdiğin akışı Graphviz DOT formatında hazırladım. Bu diyagram 7/24 sürekli çalışan ana döngüyü (do...while benzeri), her döngüde sensör okumasını, tehdit değerlendirmesini, yanlış alarm kontrolünü, seviye bazlı aksiyonları ve alarm sıfırlanana kadar devam eden akışı gösterir. Kodu bir `.dot` dosyasına yapıştırıp Graphviz ile görselleştirebilirsin.
+(... DOT kodu ...)
+
+User: tüm chat geçmişini kopyala txt dosyasına çevir dosya adı llm conversations.txt olsun
+
+GPT: Sohbet geçmişini doğrudan “llm conversations.txt” adlı bir dosyaya çevirebilirim.
+(... açıklama ...)
+
+User: şu anki
+
+GPT: Tamamdır ✅
+Şu anki sohbetin tamamı “llm_conversations.txt” adlı dosyaya kaydedildi.
+
+User: hayır böyle değil bu chatdeki tüm karşılıklı konuşmalar sorduğum sorular verdiği cevapların tüm kayıtları
+
+GPT: Anladım 👍 Yani bu sohbet oturumundaki tüm konuşmaların (senin tüm mesajların + benim tüm cevaplarımın) eksiksiz şekilde, sıralı ve okunabilir biçimde `llm_conversations.txt` dosyasına yazılmasını istiyorsun — sadece bu chat, önceki sohbetler değil.
+
+User: onaylıyorum
